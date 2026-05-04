@@ -76,7 +76,7 @@
 }
 
 .cb-btn.p-button.cb-md {
-    height: 35px;
+    height: 30px;
     padding: 0 20px;
     font-size: 0.875rem;
 }
@@ -93,6 +93,7 @@
     color: #ffffff;
     border-color: #0f763c;
     box-shadow: 0 4px 12px rgba(15, 118, 60, 0.18);
+    font-size: 13.5px;
 }
 
 .cb-btn.p-button.cb-primary:not(:disabled):hover {

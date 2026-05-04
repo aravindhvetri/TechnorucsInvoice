@@ -28,7 +28,7 @@
     width: 100%;
     box-sizing: border-box;
     border-radius: 6px;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e2e8f0 ; /*##e2e8f0;*/
     background: #ffffff;
     font-family: 'Segoe UI', sans-serif;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;

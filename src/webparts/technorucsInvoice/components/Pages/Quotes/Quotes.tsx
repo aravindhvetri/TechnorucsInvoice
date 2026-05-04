@@ -49,9 +49,12 @@ const getStatusStyles = (status: string) => {
   }
   // Draft / Default
   return {
-    background: "#d5e0eddc",
+    /*background: "#d5e0eddc",
     color: "#475569",
-    border: "1px solid #e2e8f0",
+    border: "1px solid #e2e8f0",*/
+    background: "#F3F4F8",//"#d5e0eddc",
+    color: "#475569",
+    border: "1px solid #D2D4DA", //#e2e8f0",
   };
 };
 
@@ -272,7 +275,7 @@ const Quotes: any = (props: any) => {
 
             <div className="crm-new-btn-wrapper">
               <CustomButton
-                label="New Quote"
+                label="New"
                 icon="pi pi-plus"
                 onClick={() => setView("NewQuote")}
                 variant="primary"
@@ -337,7 +340,7 @@ const Quotes: any = (props: any) => {
             {
               field: "Status",
               header: "Status",
-              width: "150px",
+              width: "130px",
               renderBody: (row: any) => (
                 <div
                   style={{

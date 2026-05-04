@@ -47,6 +47,7 @@
 
 .p-input-icon-left-right-wrapper.p-input-icon-left>i:first-child {
     left: 12px;
+    top:9px;
 }
 
 .p-input-icon-left-right-wrapper.p-input-icon-right>i:last-child {

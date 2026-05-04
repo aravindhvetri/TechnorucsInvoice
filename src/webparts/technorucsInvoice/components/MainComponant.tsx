@@ -347,7 +347,7 @@ const MainComponent: any = (props: any) => {
 
               <div className="crm-new-btn-wrapper">
                 <CustomButton
-                  label="Add New Customer"
+                  label="New"
                   icon="pi pi-plus"
                   onClick={() => setView("new-customer")}
                   variant="primary"

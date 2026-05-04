@@ -57,12 +57,13 @@
     text-overflow: ellipsis;
     display: block;
     max-width: 100%;
+    font-size: 13.5px;
 }
 
 /* Smooth Action Icons */
 .action-icon-smooth {
     cursor: pointer;
-    font-size: 1.15rem;
+    font-size: 1rem;
     color: #64748b;
     transition: color 0.2s ease, transform 0.2s ease;
     padding: 4px;
@@ -144,7 +145,7 @@
 .crm-toolbar-search .p-inputtext,
 .crm-toolbar-search .p-input-icon-left > input {
   background-color: #ffffff !important;
-  border: 1px solid #e5e7eb !important;
+  border: 1px solid #e2e8f0 !important; /* #e5e7eb !important;*/
   border-radius: 7px !important;
   height: 30px !important;
   font-size: 0.88rem;
@@ -219,7 +220,7 @@
   .crm-currency-filter { order: 3; flex: 0 0 150px; } /* Fits both Customer as 3rd/2nd and Invoice as 3rd */
   .crm-toolbar-search { order: 4; flex: 0 0 200px; }
   .crm-new-btn-wrapper { order: 5; flex: 0 0 100px; margin-left: 10px; }
-  .crm-new-btn-wrapper .cb-btn { width: 100px !important; min-width: 100px !important; padding: 0 10px !important; }
+  .crm-new-btn-wrapper .cb-btn { width: 90px !important; min-width: 90px !important; padding: 0 10px !important; }
   
   .crm-refresh-btn { order: 6; flex: 0 0 auto; }
 
@@ -228,7 +229,7 @@
   }
   .crm-toolbar-action .cb-btn .p-button-label {
     display: inline-block !important;
-    margin-left: 6px !important;
+    margin-left: -8px !important;
   }
 }
 

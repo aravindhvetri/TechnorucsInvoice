@@ -35,7 +35,7 @@ const CustomDataTable = (props: IProps) => {
         scrollable
         scrollHeight="500px"
         className="custom-table"
-        tableStyle={{ minWidth: "1150px" }}
+        tableStyle={{ minWidth: "1150px"}}
         emptyMessage={
           <div style={{ textAlign: "center", padding: "40px" }}>
             <i className="pi pi-search-plus" style={{ fontSize: "2rem", color: "#94a3b8", marginBottom: "12px" }}></i>

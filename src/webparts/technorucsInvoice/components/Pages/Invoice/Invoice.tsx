@@ -89,9 +89,9 @@ const getStatusStyles = (status: string) => {
   }
   // Draft / Default
   return {
-    background: "#d5e0eddc",
+    background: "#F3F4F8",//"#d5e0eddc",
     color: "#475569",
-    border: "1px solid #e2e8f0",
+    border: "1px solid #D2D4DA", //#e2e8f0",
   };
 };
 
@@ -644,7 +644,7 @@ const Invoice: any = (context: any) => {
             {
               field: "Created",
               header: "Date",
-              width: "100px",
+              width: "90px",
               renderBody: (row: any) => (
                 <div className="truncate-text" title={fmt(row.Created)}>
                   {fmt(row.Created)}
@@ -654,7 +654,7 @@ const Invoice: any = (context: any) => {
             {
               field: "Invoice",
               header: "Invoice no",
-              width: "130px",
+              width: "120px",
               renderBody: (row: any) => (
                 <div
                   className="truncate-text"
@@ -668,7 +668,7 @@ const Invoice: any = (context: any) => {
             {
               field: "Due_x0020_Date",
               header: "Due Date",
-              width: "120px",
+              width: "110px",
               renderBody: (row: any) => {
                 const dateVal = row.Due_x0020_Date
                   ? new Date(row.Due_x0020_Date).toLocaleDateString("en-GB")
@@ -693,7 +693,7 @@ const Invoice: any = (context: any) => {
             {
               field: "Status",
               header: "Status",
-              width: "150px",
+              width: "140px",
               renderBody: (row: any) => (
                 <div
                   onClick={() => {
@@ -722,7 +722,7 @@ const Invoice: any = (context: any) => {
             {
               field: "Total",
               header: "Final amount",
-              width: "150px",
+              width: "130px",
               renderBody: (row: any) => {
                 const amount = `${row.Currency ? row.Currency.split("-")[0] : ""} - ${row.Total}`;
                 return (
