@@ -1,0 +1,74 @@
+/* Custom Toast styles to match the requested image */
+
+.Toastify__toast-container {
+  width: 380px !important;
+}
+
+.Toastify__toast {
+  background: #ffffff !important;
+  color: #333333 !important;
+  border-radius: 6px !important;
+  padding: 16px !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+  min-height: 70px !important;
+  border: 1px solid #eeeeee !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+.Toastify__toast-body {
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Custom Icons */
+.Toastify__toast-icon {
+  width: 24px !important;
+  margin-right: 12px !important;
+}
+
+/* Thick progress bar at the bottom */
+.Toastify__progress-bar {
+  height: 5px !important;
+  bottom: 0 !important;
+  top: auto !important;
+  left: 0 !important;
+  border-bottom-left-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  opacity: 1 !important;
+}
+
+.Toastify__progress-bar--success {
+  background: #22c55e !important; /* Green */
+}
+
+.Toastify__progress-bar--error {
+  background: #ef4444 !important; /* Red */
+}
+
+.Toastify__progress-bar--warning {
+  background: #f59e0b !important; /* Yellow */
+}
+
+.Toastify__progress-bar--info {
+  background: #3b82f6 !important; /* Blue */
+}
+
+/* Close button style */
+.Toastify__close-button {
+  color: #9ca3af !important;
+  opacity: 0.8 !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+}
+
+.Toastify__close-button:hover {
+  color: #4b5563 !important;
+}

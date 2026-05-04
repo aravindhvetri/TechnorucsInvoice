@@ -1,0 +1,125 @@
+/* ── Mobile Bottom Nav root — white floating card ── */
+.mbn-bar {
+  display: none; /* desktop hidden, revealed by media query */
+  position: fixed;
+  bottom: 16px;
+  left: 10px;
+  right: 10px;
+  z-index: 1000;
+  justify-content: space-around;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 8px 6px;
+  height: 70px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8ecf0;
+  /* needed for the sliding pill child */
+  overflow: hidden;
+}
+
+
+
+/* ── Sliding background pill ── */
+.mbn-pill {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  background: #e8f5ec; /* light green tint — matches reference */
+  border-radius: 14px;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Each nav item ── */
+.mbn-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  flex: 1;
+  gap: 3px;
+  padding: 4px 0;
+  border-radius: 14px;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Press feedback */
+.mbn-item:active {
+  transform: scale(0.92);
+}
+
+/* ── Icon wrapper ── */
+.mbn-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mbn-icon {
+  font-size: 1.2rem;
+  color: #9ca3af; /* inactive — grey */
+  transition: color 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Label ── */
+.mbn-label {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #9ca3af; /* inactive — grey */
+  text-transform: uppercase;
+  transition: color 0.3s ease, font-weight 0.2s ease;
+  white-space: nowrap;
+}
+
+/* ── Active State ── */
+.mbn-item--active .mbn-icon {
+  color: #0f763c; /* brand green */
+  transform: translateY(-2px) scale(1.12);
+}
+
+.mbn-item--active .mbn-icon-wrap {
+  transform: translateY(-1px);
+}
+
+.mbn-item--active .mbn-label {
+  color: #0f763c;
+  font-weight: 700;
+}
+
+/* ── Hover State (non-active) ── */
+.mbn-item:not(.mbn-item--active):hover .mbn-icon {
+  color: #64748b;
+  transform: translateY(-1px);
+}
+
+.mbn-item:not(.mbn-item--active):hover .mbn-label {
+  color: #64748b;
+}
+
+/* ── Show only on Mobile ── */
+@media (max-width: 768px) {
+  .mbn-bar {
+    display: flex;
+  }
+}
+
+
+/* ── Landscape + very short screens ── */
+@media (max-height: 500px) {
+  .mbn-bar {
+    height: 56px;
+    padding: 4px;
+  }
+
+  .mbn-label {
+    display: none;
+  }
+}

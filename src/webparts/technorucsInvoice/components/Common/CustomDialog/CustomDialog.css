@@ -1,0 +1,121 @@
+/* Overlay blur for a modern look */
+.p-dialog-mask {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Base Dialog Override (Make it white) */
+.custom-themed-dialog,
+.custom-themed-dialog .p-dialog,
+.custom-themed-dialog .p-dialog-header,
+.custom-themed-dialog .p-dialog-content,
+.custom-themed-dialog .p-dialog-footer {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+}
+
+/* Header Text (Theme Green) */
+.custom-themed-dialog .p-dialog-header .custom-dialog-title {
+  color: #0f763c !important; /* Theme Green */
+  font-size: 16px;
+  font-weight: 700;
+  text-align: left;
+  width: 100%;
+}
+
+/* Content labels (Theme Green) */
+.dialog-label {
+  display: block;
+  color: #0f763c !important; /* Theme Green */
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+/* Let standard components (InputBox, Dropdown) handle their own styles */
+.custom-themed-dialog .cib-wrapper,
+.custom-themed-dialog .cdd-wrapper {
+  margin-bottom: 0px !important;
+}
+
+/* Focus color (Green) - Global override for dialog specifically if needed */
+.custom-themed-dialog .p-inputtext:focus,
+.custom-themed-dialog .p-dropdown:focus {
+  border-color: #0f763c !important;
+}
+
+/* Footer (Action buttons) */
+.custom-dialog-footer {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  padding: 5px 0 10px 0;
+}
+
+/* Save button (Green background, white text) */
+.dialog-save-btn {
+  background: #0f763c !important;
+  color: white !important;
+  border: none !important;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 35px;
+  min-width: 110px;
+}
+
+.dialog-save-btn:hover {
+  transform: translateY(-1px);
+  background: #0d6332 !important;
+  box-shadow: 0 4px 12px rgba(15, 118, 60, 0.2);
+}
+
+/* Cancel button (Clean light blue-ish background) */
+.dialog-cancel-btn {
+  background: #f8fafc !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 35px;
+  min-width: 110px;
+}
+
+.dialog-cancel-btn:hover {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Reduce overall popup size */
+.custom-themed-dialog {
+  max-width: 380px !important; /* Compact size */
+  width: 90% !important;
+}
+
+.custom-themed-dialog.payment-dialog-wide {
+  max-width: 600px !important;
+}
+
+/* Icon (X) styling */
+.custom-themed-dialog .p-dialog-header-icon {
+  color: #adb5bd !important;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.custom-themed-dialog .p-dialog-header-icon:hover {
+  background: #f8f9fa !important;
+  color: #0f763c !important;
+}

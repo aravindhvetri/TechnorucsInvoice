@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "technorucs-invoice-client-side-solution",
+    "id": "831eef73-351a-4bd5-931b-191295374b09",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.22.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "TechnorucsInvoice description"
+      },
+      "longDescription": {
+        "default": "TechnorucsInvoice description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "technorucs-invoice Feature",
+        "description": "The feature that activates elements of the technorucs-invoice solution.",
+        "id": "7206ff89-c005-4769-bf01-32def41b53f2",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/technorucs-invoice.sppkg"
+  }
+}

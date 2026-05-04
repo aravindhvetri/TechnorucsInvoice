@@ -1,0 +1,193 @@
+/* ===========================
+   CustomButton — PrimeReact Button Wrapper
+   No @import url() — SPFx CSS loader restriction
+   =========================== */
+
+/* ── Base ── */
+.cb-btn.p-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+    gap: 6px;
+    letter-spacing: 0.01em;
+}
+
+.cb-btn.p-button:active:not(:disabled) {
+    transform: scale(0.96);
+    box-shadow: none !important;
+}
+
+/* ── Ripple wrapper ── */
+.cb-btn-wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.cb-btn-wrapper.cb-full-width {
+    width: 100%;
+}
+
+/* ── Ripple splash ── */
+.cb-btn.p-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.cb-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.38);
+    transform: scale(0);
+    animation: cb-ripple-anim 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+}
+
+@keyframes cb-ripple-anim {
+    to {
+        transform: scale(2.8);
+        opacity: 0;
+    }
+}
+
+
+.cb-btn.p-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Full width ── */
+.cb-btn.p-button.cb-full-width {
+    width: 100%;
+}
+
+/* ── Sizes ── */
+.cb-btn.p-button.cb-sm {
+    height: 35px;
+    padding: 0 14px;
+    font-size: 0.78rem;
+}
+
+.cb-btn.p-button.cb-md {
+    height: 35px;
+    padding: 0 20px;
+    font-size: 0.875rem;
+}
+
+.cb-btn.p-button.cb-lg {
+    height: 35px;
+    padding: 0 28px;
+    font-size: 1rem;
+}
+
+/* ── Primary ── */
+.cb-btn.p-button.cb-primary {
+    background: #0f763c;
+    color: #ffffff;
+    border-color: #0f763c;
+    box-shadow: 0 4px 12px rgba(15, 118, 60, 0.18);
+}
+
+.cb-btn.p-button.cb-primary:not(:disabled):hover {
+    background: #0d6332;
+    border-color: #0d6332;
+    box-shadow: 0 6px 18px rgba(15, 118, 60, 0.28);
+}
+
+/* ── Secondary ── */
+.cb-btn.p-button.cb-secondary {
+    background: #ffffff;
+    color: #334155;
+    border-color: #e2e8f0;
+    box-shadow: none;
+}
+
+.cb-btn.p-button.cb-secondary:not(:disabled):hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+/* ── Outline ── */
+.cb-btn.p-button.cb-outline {
+    background: transparent;
+    color: #0f763c;
+    border-color: #0f763c;
+}
+
+.cb-btn.p-button.cb-outline:not(:disabled):hover {
+    background: #e8f5ee;
+}
+
+/* ── Ghost ── */
+.cb-btn.p-button.cb-ghost {
+    background: transparent;
+    color: #0f763c;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.cb-btn.p-button.cb-ghost:not(:disabled):hover {
+    background: #e8f5ee;
+}
+
+/* ── Danger ── */
+.cb-btn.p-button.cb-danger {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.18);
+}
+
+.cb-btn.p-button.cb-danger:not(:disabled):hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.28);
+}
+
+/* ── Icon spacing ── */
+.cb-btn.p-button .p-button-icon-left {
+    margin-right: 6px;
+    font-size: 0.85em;
+}
+
+.cb-btn.p-button .p-button-icon-right {
+    margin-left: 6px;
+    font-size: 0.85em;
+}
+
+/* ── Smooth Action Button ── */
+.new-customer-btn-smooth {
+    width: 136px !important;
+    height: 36px !important;
+    /* padding: 0 !important; */
+    justify-content: center !important;
+    gap: 5px !important;
+}
+
+.new-customer-btn-smooth .p-button-icon-left {
+    margin-right: 0 !important; 
+    font-size: 1.15em;
+    line-height: 1 !important;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.new-customer-btn-smooth .p-button-label {
+    line-height: 1 !important;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: small;
+    font-weight: 500;
+}
+
+.new-customer-btn-smooth.cb-btn.p-button:active:not(:disabled) {
+    transform: scale(0.88);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

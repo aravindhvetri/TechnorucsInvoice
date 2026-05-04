@@ -1,0 +1,134 @@
+/* ===========================
+   CustomInputBox — PrimeReact InputText Wrapper
+   No @import url() — SPFx CSS loader restriction
+   =========================== */
+
+.cib-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Label */
+.cib-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cib-required {
+    color: #ef4444;
+}
+
+/* Icon wrapper — works with PrimeReact's p-input-icon-left/right */
+.p-input-icon-left-right-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 35px; /* Match input height for icon centering */
+}
+
+.p-input-icon-left-right-wrapper>i {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    pointer-events: none;
+    transition: color 0.2s;
+    z-index: 1;
+}
+
+.p-input-icon-left-right-wrapper.p-input-icon-left>i:first-child {
+    left: 12px;
+}
+
+.p-input-icon-left-right-wrapper.p-input-icon-right>i:last-child {
+    right: 12px;
+}
+
+.p-input-icon-left-right-wrapper:focus-within>i {
+    color: #0f763c;
+}
+
+.cib-icon-clickable {
+    pointer-events: auto !important;
+    cursor: pointer;
+}
+
+.cib-icon-clickable:hover {
+    color: #0f763c !important;
+}
+
+/* InputText override */
+.cib-input.p-inputtext {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1.5px solid #e2e8f0;
+    height: 35px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1e293b;
+    font-family: 'Segoe UI', sans-serif;
+    background: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Adjust padding when icons present */
+.p-input-icon-left .cib-input.p-inputtext {
+    padding-left: 36px;
+}
+
+.p-input-icon-right .cib-input.p-inputtext {
+    padding-right: 36px;
+}
+
+.p-input-icon-left.p-input-icon-right .cib-input.p-inputtext {
+    padding-left: 36px;
+    padding-right: 36px;
+}
+
+/* Focus */
+.cib-input.p-inputtext:enabled:focus {
+    border-color: #0f763c;
+    box-shadow: 0 0 0 3px rgba(15, 118, 60, 0.12);
+    outline: none;
+}
+
+/* Placeholder */
+.cib-input.p-inputtext::placeholder {
+    color: #b0bec5;
+    font-weight: 400;
+}
+
+/* Error */
+.cib-input.p-inputtext.p-invalid {
+    border-color: #ef4444;
+}
+
+.cib-input.p-inputtext.p-invalid:enabled:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.cib-error-msg {
+    font-size: 0.75rem;
+    color: #ef4444;
+    font-weight: 500;
+}
+
+/* Disabled */
+.cib-wrapper.cib-disabled .cib-input.p-inputtext:disabled {
+    background: #f8fafc;
+    color: #000000 !important;
+    cursor: not-allowed;
+    -webkit-text-fill-color: #000000 !important; /* Safari/iOS support */
+    opacity: 1 !important; /* PrimeReact might have opacity */
+}

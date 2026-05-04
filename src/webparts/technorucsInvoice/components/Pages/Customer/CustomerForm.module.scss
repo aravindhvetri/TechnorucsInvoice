@@ -1,0 +1,1169 @@
+/* ===========================
+   CustomerForm — Responsive SCSS Module
+   No @import url() — SPFx CSS loader restriction
+   =========================== */
+
+/* ── Page shell ── */
+.page {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8fafb;
+    min-height: 100%;
+    padding: 20px 20px;
+    color: #1e293b;
+    box-sizing: border-box;
+}
+
+/* ── Page header ── */
+.pageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.pageTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f763c;
+    margin: 0;
+}
+
+.headerActions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ── GST Banner ── */
+.gstBanner {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: #334155;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+
+    i {
+        color: #3b82f6;
+        font-size: 1rem;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+}
+
+.prefillLink {
+    color: #0f763c;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/* ── Form card ── */
+.formCard {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    padding: 4px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ── Form row ── */
+/* Desktop (≥ 640px): label left, control right side by side */
+.formRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 14px 20px;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+.rowLabel {
+    width: 180px;
+    min-width: 150px;
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0b4d53;
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.requiredLabel {
+    color: #ef4444;
+    font-weight: 700;
+}
+.required{
+      color: #ef4444;
+    font-weight: 700;
+}
+
+.rowControl {
+    flex: 1;
+    min-width: 0;
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    /* Force all direct child wrappers to fill available width */
+    > div,
+    > span {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* ── Inline group (Salutation + First + Last) ── */
+.inlineGroup {
+    flex-direction: row !important;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: nowrap;
+
+    > :first-child {
+        flex: 0 0 120px;
+        width: 120px !important;
+        max-width: 120px !important;
+    }
+
+    > :not(:first-child) {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* ── Phone row ── */
+.phoneRow {
+    flex-direction: row !important;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.phoneSet {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    flex: 1;
+    min-width: 180px;
+
+    > * {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* ── Radio group ── */
+.radioGroup {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-top: 4px;
+    flex-wrap: wrap;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #334155;
+    cursor: pointer;
+}
+
+/* ── Error message ── */
+.errorMsg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #ef4444;
+    font-weight: 500;
+
+    i { font-size: 0.75rem; }
+}
+
+/* ── Tab navigation ── */
+.tabSection {
+    margin-top: 20px;
+}
+
+.tabStrip {
+    display: flex;
+    border-bottom: 2px solid #e2e8f0;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.tabItem {
+    position: relative;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    background: none;
+    border: none;
+    white-space: nowrap;
+    transition: color 0.25s ease;
+    font-family: 'Segoe UI', sans-serif;
+
+    &:hover {
+        color: #0f763c;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2.5px;
+        background: transparent;
+        border-radius: 2px 2px 0 0;
+        transition: background 0.25s ease;
+    }
+}
+
+.tabItemActive {
+    color: #0f763c;
+
+    &::after {
+        background: #0f763c;
+    }
+}
+
+/* ── Tab content panel ── */
+.tabContent {
+    background: #ffffff;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    padding: 4px 0;
+    width: 100%;
+    box-sizing: border-box;
+    animation: tabFadeIn 0.3s ease;
+}
+
+@keyframes tabFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Checkbox row (Enable Portal) ── */
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #334155;
+    cursor: pointer;
+    padding-top: 4px;
+}
+
+/* ── Textarea ── */
+.textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    color: #1e293b;
+    resize: vertical;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #0f763c;
+        box-shadow: 0 0 0 3px rgba(15, 118, 60, 0.1);
+    }
+
+    &::placeholder {
+        color: #94a3b8;
+    }
+}
+
+/* ── Address grid ── */
+.addressGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 14px 20px;
+}
+
+.addressField {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.addressFieldFull {
+    grid-column: 1 / -1;
+}
+
+.fieldLabel {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0b4d53;
+}
+
+/* ── Contact persons table ── */
+.contactTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+
+    th {
+        text-align: left;
+        padding: 10px 16px;
+        font-weight: 600;
+        color: #0b4d53;
+        background: #f8fafb;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 0.78rem;
+    }
+
+    td {
+        padding: 10px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+    }
+}
+
+.addContactBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0f763c;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s ease;
+    font-family: 'Segoe UI', sans-serif;
+
+    &:hover {
+        color: #0d6332;
+        text-decoration: underline;
+    }
+}
+
+/* ── Remarks info text ── */
+.remarksNote {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    padding-top: 4px;
+}
+
+/* ─────────────────────────────────
+   Responsive — Tablet (≤ 768px)
+   ───────────────────────────────── */
+@media (max-width: 768px) {
+    .page {
+        padding: 16px 14px;
+    }
+
+    .pageHeader {
+        gap: 8px;
+    }
+
+    .pageTitle {
+        font-size: 1.05rem;
+    }
+
+    .formRow {
+        padding: 12px 16px;
+        gap: 8px;
+    }
+
+    .rowLabel {
+        width: 160px;
+        min-width: 130px;
+        font-size: 0.8rem;
+    }
+
+    .inlineGroup {
+        flex-wrap: wrap !important;
+
+        > :first-child {
+            flex: 0 0 110px;
+            width: 110px !important;
+            max-width: 110px !important;
+        }
+
+        > :not(:first-child) {
+            flex: 1;
+            min-width: 100px;
+        }
+    }
+}
+
+/* ─────────────────────────────────
+   Responsive — Mobile (≤ 600px)
+   Form rows stack vertically
+   ───────────────────────────────── */
+@media (max-width: 600px) {
+    .page {
+        padding: 12px 8px;
+    }
+
+    .pageHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .pageTitle {
+        font-size: 1rem;
+    }
+
+    .headerActions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .formCard {
+        border-radius: 8px;
+    }
+
+    /* Stack label above control */
+    .formRow {
+        flex-direction: column;
+        padding: 10px 12px;
+        gap: 4px;
+    }
+
+    .rowLabel {
+        width: 100%;
+        min-width: unset;
+        padding-top: 0;
+        padding-bottom: 2px;
+        font-size: 0.8rem;
+    }
+
+    .rowControl {
+        width: 100%;
+    }
+
+    /* Primary Contact: wrap fields */
+    .inlineGroup {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+
+        > :first-child {
+            flex: 0 0 100px;
+            width: 100px !important;
+            max-width: 100px !important;
+        }
+
+        > :not(:first-child) {
+            flex: 1;
+            min-width: 120px;
+        }
+    }
+
+    /* Phone: stack the two sets vertically */
+    .phoneRow {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .phoneSet {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Radio buttons tighter spacing */
+    .radioGroup {
+        gap: 16px;
+    }
+
+    .errorMsg {
+        font-size: 0.72rem;
+    }
+
+    .tabItem {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .addressGrid {
+        grid-template-columns: 1fr;
+        padding: 12px 12px;
+    }
+
+    .contactTable {
+        th, td {
+            padding: 8px 12px;
+            font-size: 0.78rem;
+        }
+    }
+}
+
+/* ─────────────────────────────────
+   Responsive — Very narrow (≤ 380px)
+   Full stack everything
+   ───────────────────────────────── */
+@media (max-width: 380px) {
+    .page {
+        padding: 8px 6px;
+    }
+
+    .pageTitle {
+        font-size: 0.95rem;
+    }
+
+    .headerActions {
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        /* Make buttons full-width on tiny screens */
+        > div,
+        > button {
+            width: 100%;
+        }
+    }
+
+    .formRow {
+        padding: 8px 10px;
+    }
+
+    .rowLabel {
+        font-size: 0.78rem;
+    }
+
+    /* Stack salutation + name fields fully */
+    .inlineGroup {
+        flex-direction: column !important;
+
+        > :first-child,
+        > :not(:first-child) {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: unset !important;
+        }
+    }
+
+    /* Phone code dropdown can be wider when stacked */
+    .phoneSet {
+        > :first-child {
+            flex: 0 0 90px;
+            width: 90px !important;
+            max-width: 90px !important;
+        }
+    }
+
+    .radioGroup {
+        gap: 12px;
+    }
+
+    .tabItem {
+        padding: 6px 10px;
+        font-size: 0.76rem;
+    }
+
+    .tabSection {
+        margin-top: 14px;
+    }
+}
+/* ── Dropdown Footer (Add New Currency) ── */
+.dropdownFooter {
+    padding: 8px 12px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+}
+
+.addNewBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0d4a27;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px 0;
+    width: 100%;
+    text-align: left;
+    transition: color 0.2s;
+
+    &:hover {
+        color: #08331b;
+    }
+
+    i {
+        font-size: 0.9rem;
+    }
+}
+
+/* ── Currency Dialog ── */
+.dialogContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 8px;
+}
+
+.dialogField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dialogLabel {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0b4d53;
+}
+
+.dialogFooter {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 16px 0 0 0;
+}
+
+.formFooter{
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 0 0 0;
+}
+
+/* ── Address Tab — Two-column grid ── */
+.addressContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 32px;
+    padding: 16px 20px;
+}
+
+.addressSectionTitle {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #0f763c;
+    margin: 0 0 16px;
+}
+
+.addressRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 6px 0;
+    gap: 12px;
+    box-sizing: border-box;
+    border: none;
+}
+
+.copyBillingBtn {
+    background: none;
+    border: none;
+    color: #0f763c;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+
+    &:hover {
+        color: #0d6332;
+    }
+}
+
+/* ── Contact Persons Tab ── */
+.contactPersonContainer {
+    padding: 16px 20px;
+    overflow: hidden; /* Prevent horizontal scroll on small screens */
+}
+
+/* Base grid layout - used for Desktop */
+.contactGrid {
+    display: grid;
+    grid-template-columns: 100px 140px 140px 1fr 150px 150px 48px;
+    gap: 12px;
+    padding: 12px 0;
+    align-items: center;
+}
+
+.contactHeader {
+    background: #f8fafb;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 10px 12px;
+    border-radius: 8px 8px 0 0;
+    display: grid; /* Desktop grid */
+}
+
+.contactHeaderCell {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.contactRow {
+    border-bottom: 1px solid #f1f5f9;
+    padding: 12px;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #fcfdfe;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    > div, > span {
+        width: 100% !important;
+    }
+}
+
+.contactPhoneGroup {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Desktop Only controls */
+.desktopOnly {
+    display: block;
+}
+
+/* Mobile specific labels hidden on desktop */
+.mobileRowHeader,
+.mobileCellLabel,
+.mobileDivider,
+.mobileOnly {
+    display: none;
+}
+
+/* ─────────────────────────────────
+   Contact Responsive (≤ 991px)
+   ───────────────────────────────── */
+@media (max-width: 991px) {
+    .contactHeader {
+        display: none !important; /* Hide table headers */
+    }
+
+    .contactPersonContainer {
+        padding: 16px 12px;
+    }
+
+    .contactGrid {
+        display: flex; /* Stack vertically */
+        flex-direction: column;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 0; /* Changed to 0 to allow header to touch edges */
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        min-width: unset;
+        gap: 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contactRow {
+        padding: 0;
+        border-bottom: none;
+    }
+
+    .mobileRowHeader {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        background: #f8fafb;
+        padding: 12px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 16px;
+    }
+
+    .itemCounter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 0.85rem;
+
+        .counterPill {
+            background: #eef2f6;
+            color: #64748b;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+    }
+
+    .deleteBtnModern {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: #fff1f2;
+        color: #e11d48;
+        border: 1px solid #ffe4e6;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            background: #ffe4e6;
+            transform: translateY(-1px);
+        }
+
+        i { font-size: 0.9rem; }
+    }
+
+    /* Padding for the content fields below the header */
+    .rowCell {
+        padding: 0 20px 20px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+    }
+
+    .mobileCellLabel {
+        display: block !important;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        letter-spacing: 0.05em;
+    }
+
+    .mobileOnly { display: block !important; }
+    .desktopOnly { display: none !important; }
+
+    /* Space out items in card */
+    .rowCell {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 0;
+    }
+
+    .mobileDivider { display: none; }
+    .mobileFlexRow { display: block; width: 100%; }
+}
+
+.addContactBtn2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 0 16px;
+    height: 35px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    color: #0f763c;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Segoe UI', sans-serif;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #dcfce7;
+    }
+}
+
+/* ── Remarks Tab ── */
+.remarksContainer {
+    padding: 16px 20px;
+}
+
+.remarksTitle {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #1e293b;
+    margin: 0 0 8px;
+}
+
+.remarksSubtitle {
+    color: #64748b;
+    font-weight: 400;
+}
+
+/* ─────────────────────────────────
+   Responsive — Tablet (≤ 768px)
+   Address tab + Contact tab
+   ───────────────────────────────── */
+@media (max-width: 768px) {
+    .addressContainer {
+        grid-template-columns: 1fr;
+        gap: 24px 0;
+        padding: 16px 14px;
+    }
+
+    .contactGrid {
+        grid-template-columns: 100px 1fr 1fr 1.2fr 160px 160px 32px;
+        gap: 6px;
+        padding: 6px 8px;
+    }
+}
+
+/* ─────────────────────────────────
+   Responsive — Mobile (≤ 600px)
+   Full stack
+   ───────────────────────────────── */
+@media (max-width: 600px) {
+    .addressContainer {
+        grid-template-columns: 1fr;
+        gap: 20px 0;
+        padding: 12px 10px;
+    }
+
+    .addressRow {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .contactPersonContainer {
+        padding: 12px 4px;
+    }
+
+    .contactGrid {
+        min-width: 700px;
+    }
+
+    .remarksContainer {
+        padding: 12px 10px;
+    }
+
+    .formFooter {
+        padding: 12px 10px;
+        flex-wrap: wrap;
+    }
+}
+
+/* ── Stepper Progress Indicator ── */
+.stepperContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px 8px;
+    gap: 0;
+}
+
+.stepItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.stepCircle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 2px solid #cbd5e1;
+    background: #ffffff;
+    color: #94a3b8;
+    transition: all 0.3s ease;
+}
+
+.stepActive {
+    border-color: #0f763c;
+    background: #0f763c;
+    color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(15, 118, 60, 0.15);
+}
+
+.stepCompleted {
+    border-color: #0f763c;
+    background: #0f763c;
+    color: #ffffff;
+
+    i {
+        font-size: 0.8rem;
+    }
+}
+
+.stepLabel {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #94a3b8;
+    white-space: nowrap;
+    transition: color 0.3s;
+}
+
+.stepLabelActive {
+    color: #0f763c;
+    font-weight: 700;
+}
+
+.stepLine {
+    flex: 1;
+    height: 3px;
+    background: #e2e8f0;
+    margin: 0 -4px;
+    margin-bottom: 22px;
+    min-width: 40px;
+    transition: background 0.3s;
+}
+
+.stepLineCompleted {
+    background: #0f763c;
+}
+
+/* ── Previous / Next Navigation ── */
+.mobileTabNav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 20px;
+    margin-top: 8px;
+}
+
+.mobileTabBtn {
+    padding: 9px 24px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Segoe UI', sans-serif;
+    transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+
+    &:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+}
+
+.mobileTabBtnOutline {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+
+    &:hover:not(:disabled) {
+        background: #f8fafc;
+        border-color: #94a3b8;
+    }
+}
+
+.mobileTabBtnFilled {
+    background: #0f763c;
+    border: 1px solid #0f763c;
+    color: #ffffff;
+
+    &:hover:not(:disabled) {
+        background: #0b5d2f;
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .stepperContainer {
+        padding: 16px 10px 4px;
+    }
+
+    .stepCircle {
+        width: 30px;
+        height: 30px;
+        font-size: 0.72rem;
+    }
+
+    .stepLabel {
+        font-size: 0.62rem;
+    }
+
+    .stepLine {
+        min-width: 20px;
+    }
+}
+/* ── Attachments ── */
+.attachmentSection {
+    margin-top: 24px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.fileUploadBox {
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafb;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+
+    &:hover {
+        border-color: #0f763c;
+        background: #f0fdf4;
+    }
+}
+
+.uploadLabel {
+    color: #64748b;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}

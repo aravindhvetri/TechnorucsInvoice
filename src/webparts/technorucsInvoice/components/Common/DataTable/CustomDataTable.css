@@ -1,0 +1,27 @@
+.p-datatable .p-datatable-thead>tr>th {
+    /* background-color: #1976d2 !important; */
+    color: #0B4D53 !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    color: #0f763c !important;
+    background: #e1f4e9 !important;
+}
+
+/* Ensure consistent vertical alignment in table cells */
+.p-datatable .p-datatable-tbody > tr > td {
+    vertical-align: middle !important;
+    padding: 12px 10px !important;
+}
+
+/* Add a very subtle hover effect to table rows */
+.p-datatable-tbody > tr:hover {
+    background-color: #f8fafc !important;
+}
+
+/* Header style refinement */
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 12px 10px !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+}

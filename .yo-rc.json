@@ -1,0 +1,19 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "useGulp": false,
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.22.0",
+    "sdksVersions": {},
+    "version": "1.22.2",
+    "libraryName": "technorucs-invoice",
+    "libraryId": "831eef73-351a-4bd5-931b-191295374b09",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "TechnorucsInvoice",
+    "solutionShortDescription": "TechnorucsInvoice description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

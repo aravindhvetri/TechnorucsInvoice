@@ -1,0 +1,149 @@
+/* ===========================
+   CustomDropdown — PrimeReact Dropdown Wrapper
+   No @import url() — SPFx CSS loader restriction
+   =========================== */
+
+.cdd-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Label */
+.cdd-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cdd-required {
+    color: #ef4444;
+}
+
+/* Dropdown override */
+.cdd-dropdown.p-dropdown {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    height: 35px;
+    align-items: center;
+}
+
+.cdd-dropdown.p-dropdown:not(.p-disabled):hover {
+    border-color: #94a3b8;
+}
+
+.cdd-dropdown.p-dropdown:not(.p-disabled).p-focus {
+    border-color: #0f763c;
+    box-shadow: 0 0 0 3px rgba(15, 118, 60, 0.12);
+    outline: none;
+}
+
+/* Selected label text */
+.cdd-dropdown.p-dropdown .p-dropdown-label {
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #1e293b;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.cdd-dropdown.p-dropdown .p-dropdown-label.p-placeholder {
+    color: #b0bec5;
+    font-weight: 400;
+}
+
+/* Trigger arrow */
+.cdd-dropdown.p-dropdown .p-dropdown-trigger {
+    color: #94a3b8;
+    width: 36px;
+    border-radius: 0 6px 6px 0;
+}
+
+/* Clear icon */
+.cdd-dropdown.p-dropdown .p-dropdown-clear-icon {
+    color: #94a3b8;
+}
+
+/* Error border */
+.cdd-dropdown.p-dropdown.p-invalid {
+    border-color: #ef4444;
+}
+
+.cdd-dropdown.p-dropdown.p-invalid:not(.p-disabled).p-focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+/* Error message */
+.cdd-error-msg {
+    font-size: 0.75rem;
+    color: #ef4444;
+    font-weight: 500;
+}
+
+/* Disabled */
+.cdd-wrapper.cdd-disabled .cdd-dropdown.p-dropdown {
+    background: #f8fafc;
+    opacity: 1 !important; /* Force visibility */
+    cursor: not-allowed;
+}
+
+.cdd-wrapper.cdd-disabled .cdd-dropdown.p-dropdown .p-dropdown-label {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    opacity: 1 !important;
+}
+
+/* ── Dropdown Panel ── */
+.p-dropdown-panel .p-dropdown-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.p-dropdown-panel .p-dropdown-header .p-inputtext {
+    border-radius: 8px;
+    border-color: #e2e8f0;
+    font-size: 0.875rem;
+    padding: 7px 12px;
+}
+
+/* Force items list to render vertically */
+.p-dropdown-panel .p-dropdown-items {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #334155;
+    padding: 9px 14px;
+    transition: background 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):hover {
+    background: #f0fdf4;
+    color: #0f763c;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+    background: #e8f5ee;
+    color: #0f763c;
+    font-weight: 600;
+}

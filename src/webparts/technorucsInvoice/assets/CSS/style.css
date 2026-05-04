@@ -1,0 +1,50 @@
+#workbenchPageContent {
+    max-width: 100%;
+}
+
+.content_3f3fd3c2,
+.CanvasZone {
+    padding: 0 !important;
+    max-width: 100% !important;
+}
+
+/* ── Global Font — Inter (Classic & Professional) ──
+   Loaded via SPComponentLoader.loadCss() in WebPart.ts
+   DO NOT use @import url() here — SPFx CSS loader restriction
+   ─────────────────────────────────────────────────── */
+body
+/* *::before,
+*::after  */
+{
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+
+/* Base text */
+body,
+.p-component {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+    font-size: 14px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+/* PrimeReact override — ensure Inter propagates inside panels/overlays */
+.p-dropdown-panel,
+.p-inputtext,
+.p-button,
+.p-paginator {
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+}
+#sp-appBar,
+#spCommandBar,
+#spSiteHeader {
+  display: none !important;
+}
+ 
+.sp-pageLayout-horizontalNav {
+  margin: 0 !important;
+}
+ 

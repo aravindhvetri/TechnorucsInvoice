@@ -1,0 +1,88 @@
+/* CustomDatePicker.css */
+
+.cdp-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px; 
+    width: 100%;
+}
+
+.cdp-wrapper.cdp-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.cdp-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155; 
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.cdp-required {
+    color: #ef4444; 
+    margin-left: 4px;
+}
+
+.cdp-input {
+    width: 100%;
+}
+
+.cdp-input .p-inputtext {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1; 
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #1e293b; 
+    transition: all 0.2s ease;
+    box-shadow: none;
+    height: 35px;
+    box-sizing: border-box;
+}
+
+/* Hover and Focus States */
+.cdp-input:not(.p-disabled) .p-inputtext:hover {
+    border-color: #94a3b8; 
+}
+
+.cdp-input:not(.p-disabled) .p-inputtext:focus {
+    border-color: #0f763c; /* Primary green color */
+    box-shadow: 0 0 0 2px rgba(15, 118, 60, 0.1);
+    outline: none;
+}
+
+/* Error State */
+.cdp-input.p-invalid .p-inputtext {
+    border-color: #ef4444;
+}
+
+.cdp-input.p-invalid:not(.p-disabled) .p-inputtext:hover {
+    border-color: #ef4444;
+}
+
+.cdp-input.p-invalid:not(.p-disabled) .p-inputtext:focus {
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+.cdp-error-msg {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #ef4444;
+}
+
+.cdp-input .p-button {
+    background: #0f763c;
+    border: 1px solid #0f763c;
+    color: #ffffff;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    height: 35px;
+}
+
+.cdp-input .p-button:enabled:hover {
+    background: #0b5f2f;
+    border-color: #0b5f2f;
+}
