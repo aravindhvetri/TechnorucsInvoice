@@ -89,20 +89,24 @@ const getStatusStyles = (status: string) => {
   }
   // Draft / Default
   return {
-    background: "#F3F4F8",//"#d5e0eddc",
+    background: "#F3F4F8", //"#d5e0eddc",
     color: "#475569",
     border: "1px solid #D2D4DA", //#e2e8f0",
   };
 };
 
-const Invoice: any = (context: any) => {
+const Invoice: any = ({
+  context,
+  newInvoiceCustomer,
+  onNewInvoiceCustomerConsumed,
+}: any) => {
   console.log("context", context);
   const [items, setItems] = useState<any[]>([]);
   const [currencyOptions, setCurrencyOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [view, setView] = useState<
     "List" | "NewInvoice" | "EditInvoice" | "ViewInvoice"
-  >("List");
+  >(newInvoiceCustomer ? "NewInvoice" : "List");
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [searchText, setSearchText] = useState<any>("");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("");
@@ -204,6 +208,7 @@ const Invoice: any = (context: any) => {
         Status: "Draft",
         PaymentStatus: "Pending",
         Subject: getSPItem?.Subject || "",
+        Department: getSPItem?.Department || "",
         Currency: getSPItem?.Currency || "",
         Invoice: getSPItem?.Invoice || "",
         InvoiceDate: getSPItem?.InvoiceDate || null,
@@ -320,26 +325,35 @@ const Invoice: any = (context: any) => {
   ]);
   // ──────────────────────────────────────────────────────────────────────────
 
-  if (loading) {
-    return <AppLoader />;
-  }
-
-  // ── Customer Form view (new) ──
+  // ── New Invoice (from customer dashboard) — render BEFORE the loading guard
   if (view === "NewInvoice") {
     return (
       <InvoiceForm
-        context={context.context}
+        context={context}
         mode={"create"}
-        onCancel={() => setView("List")}
+        initialData={newInvoiceCustomer || undefined}
+        onSave={async () => {
+          await loadData();
+          setView("List");
+          if (onNewInvoiceCustomerConsumed) onNewInvoiceCustomerConsumed();
+        }}
+        onCancel={() => {
+          setView("List");
+          if (onNewInvoiceCustomerConsumed) onNewInvoiceCustomerConsumed();
+        }}
       />
     );
+  }
+
+  if (loading) {
+    return <AppLoader />;
   }
 
   // ── Customer Form view (view/edit existing) ──
   if (view === "ViewInvoice") {
     return (
       <InvoiceForm
-        context={context.context}
+        context={context}
         mode={"view"}
         onCancel={() => {
           setView("List");
@@ -351,7 +365,7 @@ const Invoice: any = (context: any) => {
   } else if (view === "EditInvoice") {
     return (
       <InvoiceForm
-        context={context.context}
+        context={context}
         mode={"edit"}
         onCancel={() => {
           setView("List");
@@ -447,7 +461,7 @@ const Invoice: any = (context: any) => {
       if (data.ZohoInvoiceID) {
         // Update existing Zoho invoice
         await UpdateInvoiceZoho(
-          context.context,
+          context,
           data.ZohoInvoiceID,
           FormatJson,
           attachmentBlobs,
@@ -456,7 +470,7 @@ const Invoice: any = (context: any) => {
       } else {
         // Create new Zoho invoice
         const res = await CreateInvoiceZoho(
-          context.context,
+          context,
           FormatJson,
           attachmentBlobs,
         );
@@ -526,7 +540,7 @@ const Invoice: any = (context: any) => {
   const handleSync = async (row: any) => {
     try {
       setLoading(true);
-      await exportToZoho(context.context, row);
+      await exportToZoho(context, row);
       toast.success("Invoice synced to Zoho!");
       await loadData();
     } catch (error) {
@@ -736,29 +750,57 @@ const Invoice: any = (context: any) => {
               field: "PaymentStatus",
               header: "Payment",
               width: "120px",
-              renderBody: (row: any) => (
-                <div
-                  style={{
-                    padding: "4px 12px",
-                    borderRadius: "50px", // Rounded pill look as per screenshot
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    textAlign: "center",
-                    ...getStatusStyles(row.PaymentStatus),
-                  }}
-                  onClick={() => {
-                    setSelectedItem(row);
-                    //     setPaymentStatus(row.PaymentStatus || "Paid");
-                    setPaidDate(
-                      row.PaymentDate ? new Date(row.PaymentDate) : null,
-                    );
-                    setIsPaymentDialogVisible(true);
-                    setSelectedItem(row);
-                  }}
-                >
-                  {row.PaymentStatus || "—"}
-                </div>
-              ),
+              renderBody: (row: any) => {
+                const isPaid = row.PaymentStatus?.toLowerCase() === "paid";
+                const paidDateDisplay =
+                  isPaid && row.PaidDate
+                    ? new Date(row.PaidDate).toLocaleDateString("en-GB")
+                    : null;
+                return (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "2px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: "4px 12px",
+                        borderRadius: "50px",
+                        fontSize: "0.75rem",
+                        fontWeight: 600,
+                        textAlign: "center",
+                        cursor: isPaid ? "default" : "pointer",
+                        ...getStatusStyles(row.PaymentStatus),
+                      }}
+                      onClick={() => {
+                        if (isPaid) return; // ← block click when already Paid
+                        setSelectedItem(row);
+                        setPaidDate(
+                          row.PaymentDate ? new Date(row.PaymentDate) : null,
+                        );
+                        setIsPaymentDialogVisible(true);
+                      }}
+                    >
+                      {row.PaymentStatus || "—"}
+                    </div>
+                    {paidDateDisplay && (
+                      <span
+                        style={{
+                          fontSize: "0.68rem",
+                          color: "#166534",
+                          fontWeight: 500,
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        {paidDateDisplay}
+                      </span>
+                    )}
+                  </div>
+                );
+              },
             },
             {
               field: "Author",
@@ -830,9 +872,28 @@ const Invoice: any = (context: any) => {
                     onClick={() => handleView(row)}
                   ></i>
                   <i
-                    className="pi pi-pencil action-icon-smooth"
-                    title="Edit Invoice"
-                    onClick={() => handleEdit(row)}
+                    className={`pi pi-pencil action-icon-smooth${
+                      row.PaymentStatus?.toLowerCase() === "paid"
+                        ? " action-icon-disabled"
+                        : ""
+                    }`}
+                    title={
+                      row.PaymentStatus?.toLowerCase() === "paid"
+                        ? "Cannot edit a paid invoice"
+                        : "Edit Invoice"
+                    }
+                    onClick={() => {
+                      if (row.PaymentStatus?.toLowerCase() === "paid") return;
+                      handleEdit(row);
+                    }}
+                    style={{
+                      opacity:
+                        row.PaymentStatus?.toLowerCase() === "paid" ? 0.35 : 1,
+                      cursor:
+                        row.PaymentStatus?.toLowerCase() === "paid"
+                          ? "not-allowed"
+                          : "pointer",
+                    }}
                   ></i>
                   <i
                     className="pi pi-sync action-icon-smooth"
@@ -959,7 +1020,8 @@ const Invoice: any = (context: any) => {
           <div
             className="dialog-field"
             style={
-              selectedItem?.Currency.includes("INR") ||
+              (selectedItem?.Currency !== null &&
+                selectedItem?.Currency.includes("INR")) ||
               selectedItem?.Status === "Edited"
                 ? { display: "none" }
                 : {}

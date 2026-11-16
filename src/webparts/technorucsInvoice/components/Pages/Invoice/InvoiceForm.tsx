@@ -18,6 +18,7 @@ import {
 import { validateInvoice } from "./InvoiceValidation";
 import { LISTNAMES } from "../../../Config/Config";
 import { log, sp } from "@pnp/pnpjs";
+import { toast } from "react-toastify";
 // import { Subject } from "@mui/icons-material";
 
 interface InvoiceFormProps {
@@ -65,6 +66,7 @@ interface IInvoiceData {
   Terms: string;
   DueDate: Date;
   Subject: string;
+  Department: string;
   Currency: string;
   Subtotal: string;
   IsUpdated: boolean;
@@ -99,14 +101,18 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
   const [currentFinYear, setCurrentFinYear] = useState<string>("");
   const [customerID, setcustomerID] = useState<string>("");
   const [invoiceForm, setInvoiceForm] = useState<IInvoiceData>({
-    CustomerDisplayName: initialData?.CustomerDisplayname || "",
+    CustomerDisplayName:
+      initialData?.CustomerDisplayname ||
+      initialData?.Customerdisplayname ||
+      "",
     InvoiceNumber: initialData?.Invoice,
     Invoice: initialData?.Invoice || "",
     InvoiceDate:
       initialData?.InvoiceDate || new Date().toISOString().split("T")[0],
     Terms: initialData?.Terms || "",
     DueDate: initialData?.Due_x0020_Date || "",
-    Subject: initialData?.Subject || "",
+    Subject: initialData?.Subject || "Technorucs Invoice",
+    Department: initialData?.Department || "",
     Currency: initialData?.Currency || "",
     Subtotal: initialData?.Subtotal || "",
     TaxableValue: initialData?.TaxableValue || "",
@@ -135,11 +141,16 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
   const [customers, setCustomers] = useState<any[]>([]);
   const [itemOptions, setItemOptions] = useState<any[]>([]);
   const [termsOptions, setTermsOptions] = useState<any[]>([]);
+  const [departmentOptions, setDepartmentOptions] = useState<any[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
   const [addressType, setAddressType] = useState<"billing" | "shipping">(
     "billing",
   );
   const [loading, setLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    visible: boolean;
+    tempId: number | null;
+  }>({ visible: false, tempId: null });
 
   // ── Calculations ──
   const calculateTotals = () => {
@@ -179,7 +190,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
     return dateObj.toISOString().split("T")[0];
   };
 
-  const handleDateOrTermChange = (dateVal: any, termStr: string) => {
+  const handleDateOrTermChange = (
+    dateVal: any,
+    termStr: string,
+    depStr: string,
+  ) => {
     let dateStr = "";
     if (dateVal instanceof Date) {
       // Need to adjust for local timezone when getting date string
@@ -199,6 +214,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
       InvoiceDate: dateStr,
       Terms: termStr,
       DueDate: newDueDate,
+      Department: depStr,
     }));
   };
 
@@ -339,6 +355,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
             ? "Edited"
             : invoiceItem?.Status,
       Subject: invoiceItem?.Subject || "",
+      Department: invoiceItem?.Department || "",
       Currency: invoiceItem?.Currency || "",
       Invoice:
         mode === "create" ? newInvoiceNumber : invoiceItem?.InvoiceNumber || "",
@@ -414,13 +431,15 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
 
       const LastInvoiceNo = await SPReadItems(LISTNAMES.InvoiceNo, [], []);
 
-      const LastInvoieNoID = LastInvoiceNo?.[0].ID;
+      const LastInvoieNoID = LastInvoiceNo?.[0]?.ID || LastInvoiceNo?.[0]?.Id;
       debugger;
-      const UpdateInvoiceNO = await SPUpdateItem(
-        LISTNAMES.InvoiceNo,
-        LastInvoieNoID,
-        { Title: invoiceForm?.Invoice },
-      );
+      if (LastInvoieNoID) {
+        const UpdateInvoiceNO = await SPUpdateItem(
+          LISTNAMES.InvoiceNo,
+          LastInvoieNoID,
+          { Title: invoiceForm?.Invoice },
+        );
+      }
       debugger;
       console.log("result", result);
 
@@ -466,12 +485,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
     }
   };
 
-  const handleCustomerChange = async (
-    val: string | number,
-    custData: any,
-    _invData?: IInvoiceData,
-  ) => {
-    let _invoiceForm = _invData ? { ..._invData } : { ...invoiceForm };
+  const handleCustomerChange = async (val: string | number, custData: any) => {
     let _customerID = null;
     let _tempcustData = custData;
     debugger;
@@ -504,8 +518,6 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
         };
       });
       debugger;
-      _invoiceForm.ProjectManagersId =
-        updatedPMDetails?.length > 0 ? updatedPMDetails : [];
 
       console.log("invoiceformafterProjectManager", invoiceForm);
       const getCustomerContactPersons = async () => {
@@ -520,9 +532,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
           let contactPersonsData: any[] = contactPersons.map((c: any) => {
             return {
               FirstName: c.FirstName,
-
               Email: c.Email,
-
               isChecked: false,
             };
           });
@@ -530,49 +540,67 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
             contactPersonsData = [
               {
                 FirstName: found.Customerdisplayname,
-
                 Email: found.Email,
-
                 isChecked: false,
               },
             ];
           }
 
-          // if (mode === "view" || mode === "edit") {
-          _invoiceForm.Email = contactPersonsData;
-          // }
-
-          console.log("contactPersons", contactPersonsData);
+          return contactPersonsData;
         } catch (err) {
           console.error("Error fetching contact persons", err);
+          return [];
         }
       };
 
-      await getCustomerContactPersons();
+      const contactPersonsData = await getCustomerContactPersons();
+
+      const CeoMail = "Chandru@chandrudemo.onmicrosoft.com";
+      const res = await sp.web.ensureUser(CeoMail);
+
+      setInvoiceForm((prev: any) => {
+        const firstRecord = prev.CEOProjectManagerId?.id;
+        const isMatched = firstRecord === res.data.Id;
+        const ceoUserDetails: IUser = {
+          email: res.data.Email || CeoMail,
+          id: res.data.Id,
+          username: res.data.Title,
+          isChecked: isMatched,
+        };
+
+        return {
+          ...prev,
+          ProjectManagersId:
+            updatedPMDetails?.length > 0 ? updatedPMDetails : [],
+          Email: contactPersonsData,
+          CEOProjectManagerId: ceoUserDetails,
+          CustomerDisplayName: val.toString(),
+          Currency: found?.Currency || "",
+        };
+      });
+      setcustomerID(_customerID);
+    } else {
+      const CeoMail = "Chandru@chandrudemo.onmicrosoft.com";
+      const res = await sp.web.ensureUser(CeoMail);
+
+      setInvoiceForm((prev: any) => {
+        const firstRecord = prev.CEOProjectManagerId?.id;
+        const isMatched = firstRecord === res.data.Id;
+        const ceoUserDetails: IUser = {
+          email: res.data.Email || CeoMail,
+          id: res.data.Id,
+          username: res.data.Title,
+          isChecked: isMatched,
+        };
+
+        return {
+          ...prev,
+          CEOProjectManagerId: ceoUserDetails,
+          CustomerDisplayName: val.toString(),
+        };
+      });
     }
 
-    const CeoMail = "Chandru@chandrudemo.onmicrosoft.com";
-    const res = await sp.web.ensureUser(CeoMail);
-
-    const firstRecord = invoiceForm.CEOProjectManagerId?.id;
-    const isMatched = firstRecord === res.data.Id;
-    console.log("isMatched", isMatched);
-    const ceoUserDetails: IUser = {
-      email: res.data.Email || CeoMail,
-      id: res.data.Id,
-      username: res.data.Title,
-      isChecked: isMatched,
-    };
-
-    _invoiceForm.CEOProjectManagerId = ceoUserDetails;
-
-    _invoiceForm.CustomerDisplayName = val.toString();
-    _invoiceForm.Currency = found?.Currency || "";
-
-    setcustomerID(_customerID);
-
-    setInvoiceForm(_invoiceForm);
-    debugger;
     console.log("invoiceForm invoice Form", invoiceForm);
   };
 
@@ -588,6 +616,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
         ["PMDetails"],
       );
       setCustomers(custData);
+      tempCustomers = custData; // ← make available in both create and edit paths
 
       try {
         if (mode === "create") {
@@ -638,14 +667,15 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
           }
           setCurrentFinYear(varFinYear);
 
-          setInvoiceForm((prev: any) => ({
-            ...prev,
-            // CEOProjectManagerId:
+          const updatedForm = {
+            ...invoiceForm,
             Invoice: newInvoiceNumber,
             InvoiceNumber: newInvoiceNumber,
-            // Financialyear: varFinYear,
-            CEOProjectManagerId: ceoUserDetails ? [ceoUserDetails] : [],
-          }));
+            CEOProjectManagerId: ceoUserDetails
+              ? ceoUserDetails
+              : { id: "", email: "", username: "", isChecked: false },
+          };
+          setInvoiceForm(updatedForm);
         }
 
         console.log("invoiceForm", invoiceForm);
@@ -663,6 +693,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
         try {
           const termsData = await GetSPChoices(LISTNAMES.Invoice, "Terms");
           setTermsOptions(termsData);
+          const departmentsData = await GetSPChoices(
+            LISTNAMES.Invoice,
+            "Department",
+          );
+          setDepartmentOptions(departmentsData);
         } catch (err) {
           console.warn("Failed to fetch Terms choices", err);
         }
@@ -775,7 +810,6 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                 await handleCustomerChange(
                   initialData?.CustomerDisplayname,
                   tempCustomers,
-                  { ...invoiceForm, Email: finalEmails },
                 );
               }
 
@@ -787,6 +821,14 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
           }
         } else {
           addNewItem();
+
+          // Pre-select customer when opened via "New Invoice" from customer dashboard
+          if (initialData?.Customerdisplayname) {
+            await handleCustomerChange(
+              initialData.Customerdisplayname,
+              tempCustomers,
+            );
+          }
         }
         debugger;
       } catch (e) {
@@ -862,8 +904,8 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
               </div>
             </div>
 
-            {/* Subject */}
-            <div className={styles.rowFull}>
+            {/* Subject,Department */}
+            <div className={styles.rowSplit}>
               <div className={styles.fieldGroup}>
                 <div className={styles.fieldLabel}>Subject</div>
                 <CustomInputBox
@@ -871,6 +913,23 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                   onChange={(v: any) =>
                     setInvoiceForm({ ...invoiceForm, Subject: v })
                   }
+                />
+              </div>
+              <div className={styles.fieldGroup}>
+                <div className={styles.fieldLabel}>
+                  Department <span className={styles.required}>*</span>
+                </div>
+                <CustomDropdown
+                  value={invoiceForm.Department}
+                  options={departmentOptions}
+                  onChange={(v: any) =>
+                    handleDateOrTermChange(
+                      invoiceForm.InvoiceDate,
+                      invoiceForm.Terms,
+                      String(v),
+                    )
+                  }
+                  placeholder="Select"
                 />
               </div>
             </div>
@@ -884,7 +943,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                 <CustomDatePicker
                   value={invoiceForm.InvoiceDate}
                   onChange={(v: any) =>
-                    handleDateOrTermChange(v, invoiceForm.Terms)
+                    handleDateOrTermChange(
+                      v,
+                      invoiceForm.Terms,
+                      invoiceForm.Department,
+                    )
                   }
                   dateFormat="dd/mm/yy"
                 />
@@ -898,7 +961,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                   value={invoiceForm.Terms}
                   options={termsOptions}
                   onChange={(v: any) =>
-                    handleDateOrTermChange(invoiceForm.InvoiceDate, String(v))
+                    handleDateOrTermChange(
+                      invoiceForm.InvoiceDate,
+                      String(v),
+                      invoiceForm.Department,
+                    )
                   }
                   placeholder="Select"
                 />
@@ -1004,8 +1071,15 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                       </div>
                       {mode !== "view" && (
                         <button
+                          type="button"
                           className={styles.deleteBtnModern}
-                          onClick={() => removeItem(item.TempID)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setDeleteConfirm({
+                              visible: true,
+                              tempId: item.TempID,
+                            });
+                          }}
                           title="Delete Item"
                         >
                           <i className="pi pi-trash" />
@@ -1106,8 +1180,15 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                     <div className={`${styles.rowCell} ${styles.desktopOnly}`}>
                       {mode !== "view" && (
                         <button
+                          type="button"
                           className={styles.deleteBtnModern}
-                          onClick={() => removeItem(item.TempID)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setDeleteConfirm({
+                              visible: true,
+                              tempId: item.TempID,
+                            });
+                          }}
                           title="Delete Item"
                         >
                           <i className="pi pi-trash" />
@@ -1245,7 +1326,11 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
                         </span>
                       </div>
                       <button
-                        onClick={() => removeAttachment(idx)}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeAttachment(idx);
+                        }}
                         style={{
                           background: "none",
                           border: "none",
@@ -1404,26 +1489,158 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({
       <div className={styles.formFooter}>
         <CustomButton label="Cancel" variant="secondary" onClick={onCancel} />
         {/* <CustomButton label="Save as Draft" variant="secondary" /> */}
-        <CustomButton
-          label={
-            mode === "view" ? "Update" : mode === "edit" ? "Update" : "Save"
-          }
-          onClick={async () => {
-            const isValid = validateInvoice(invoiceForm, itemDetails);
-            if (!isValid) return;
+        {mode !== "view" && (
+          <CustomButton
+            label={mode === "edit" ? "Update" : "Save"}
+            onClick={async () => {
+              const isValid = validateInvoice(invoiceForm, itemDetails);
+              if (!isValid) return;
 
-            const activeItems = itemDetails.filter((item) => !item.isDelete);
-            await SaveToSP(subtotal, totalTax, total);
-            onSave?.({
-              ...invoiceForm,
-              itemDetails: activeItems,
-              subtotal,
-              totalTax,
-              total,
-            });
-          }}
-        />
+              const activeItems = itemDetails.filter((item) => !item.isDelete);
+              try {
+                await SaveToSP(subtotal, totalTax, total);
+                toast.success("Invoice saved successfully!");
+                setTimeout(() => {
+                  if (onSave) {
+                    onSave({
+                      ...invoiceForm,
+                      itemDetails: activeItems,
+                      subtotal,
+                      totalTax,
+                      total,
+                    });
+                  } else if (onCancel) {
+                    onCancel();
+                  }
+                }, 1000);
+              } catch (error) {
+                console.error("Error saving invoice:", error);
+                toast.error("Failed to save invoice");
+              }
+            }}
+          />
+        )}
       </div>
+      {/* ── Delete Confirmation Dialog ── */}
+      {deleteConfirm.visible && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.45)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: "14px",
+              padding: "32px 28px 24px",
+              width: "340px",
+              maxWidth: "90vw",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+              textAlign: "center",
+            }}
+          >
+            {/* Icon */}
+            <div
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "50%",
+                background: "#fef2f2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+              }}
+            >
+              <i
+                className="pi pi-trash"
+                style={{ fontSize: "1.4rem", color: "#dc2626" }}
+              />
+            </div>
+
+            <h3
+              style={{
+                margin: "0 0 8px",
+                fontSize: "1.05rem",
+                fontWeight: 700,
+                color: "#1e293b",
+              }}
+            >
+              Delete Item?
+            </h3>
+            <p
+              style={{
+                margin: "0 0 24px",
+                fontSize: "0.875rem",
+                color: "#64748b",
+                lineHeight: 1.5,
+              }}
+            >
+              Are you sure you want to delete this item row? This action cannot
+              be undone.
+            </p>
+
+            {/* Buttons */}
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                justifyContent: "center",
+              }}
+            >
+              <button
+                type="button"
+                style={{
+                  flex: 1,
+                  padding: "9px 0",
+                  borderRadius: "8px",
+                  border: "1px solid #e2e8f0",
+                  background: "#f8fafc",
+                  color: "#475569",
+                  fontWeight: 600,
+                  fontSize: "0.875rem",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setDeleteConfirm({ visible: false, tempId: null });
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                style={{
+                  flex: 1,
+                  padding: "9px 0",
+                  borderRadius: "8px",
+                  border: "none",
+                  background: "#dc2626",
+                  color: "#fff",
+                  fontWeight: 600,
+                  fontSize: "0.875rem",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (deleteConfirm.tempId !== null) {
+                    removeItem(deleteConfirm.tempId);
+                  }
+                  setDeleteConfirm({ visible: false, tempId: null });
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

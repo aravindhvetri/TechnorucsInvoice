@@ -182,28 +182,65 @@ const QuotesForm: React.FC<QuotesFormProps> = ({
     ]);
   };
 
+  // const updateItem = (TempID: number, field: keyof ItemDetails, value: any) => {
+  //   setItemDetails((prev) =>
+  //     prev.map((item) => {
+  //       if (item.TempID === TempID) {
+  //         const updated = { ...item, [field]: value };
+  //         if (
+  //           field === "Quantity" ||
+  //           field === "Rate" ||
+  //           field === "Discount" ||
+  //           field === "DiscountType"
+  //         ) {
+  //           const baseAmount = (updated.Quantity || 0) * (updated.Rate || 0);
+  //           let discountAmt = 0;
+  //           if (updated.DiscountType === "%") {
+  //             discountAmt = (baseAmount * (updated.Discount || 0)) / 100;
+  //           } else {
+  //             discountAmt = updated.Discount || 0;
+  //           }
+  //           updated.Amount = baseAmount - discountAmt;
+  //         }
+  //         return updated;
+  //       }
+  //       return item;
+  //     }),
+  //   );
+  // };
+
   const updateItem = (TempID: number, field: keyof ItemDetails, value: any) => {
     setItemDetails((prev) =>
       prev.map((item) => {
         if (item.TempID === TempID) {
           const updated = { ...item, [field]: value };
+
           if (
             field === "Quantity" ||
             field === "Rate" ||
             field === "Discount" ||
             field === "DiscountType"
           ) {
-            const baseAmount = (updated.Quantity || 0) * (updated.Rate || 0);
-            let discountAmt = 0;
+            const baseRate = updated.Rate || 0;
+            const quantity = updated.Quantity || 0;
+
+            let finalRate = baseRate;
+
             if (updated.DiscountType === "%") {
-              discountAmt = (baseAmount * (updated.Discount || 0)) / 100;
+              finalRate = baseRate - (baseRate * (updated.Discount || 0)) / 100;
             } else {
-              discountAmt = updated.Discount || 0;
+              finalRate = baseRate - (updated.Discount || 0);
             }
-            updated.Amount = baseAmount - discountAmt;
+
+            // Prevent negative rate
+            if (finalRate < 0) finalRate = 0;
+
+            updated.Amount = parseFloat((finalRate * quantity).toFixed(2));
           }
+
           return updated;
         }
+
         return item;
       }),
     );
@@ -334,6 +371,15 @@ const QuotesForm: React.FC<QuotesFormProps> = ({
       debugger;
       const result = await SPCreateItem(LISTNAMES.Quote, json);
       const LastID = result?.data?.Id;
+      const UpdateQuoteNo = await SPReadItems(LISTNAMES.QuoteNo, [], []);
+
+      const LastInvoieNoID = UpdateQuoteNo?.[0].ID;
+      debugger;
+      const UpdateInvoiceNO = await SPUpdateItem(
+        LISTNAMES.QuoteNo,
+        LastInvoieNoID,
+        { Title: quoteForm?.QuoteNumber },
+      );
 
       // Upload Attachments
       if (attachments && attachments.length > 0) {
@@ -400,6 +446,33 @@ const QuotesForm: React.FC<QuotesFormProps> = ({
 
   useEffect(() => {
     const init = async () => {
+      if (mode === "create") {
+        // Set invoice no
+        debugger;
+        const LastQuoteNumber = await SPReadItems(LISTNAMES.QuoteNo, ["*"], []);
+
+        const currentQuotesNO = LastQuoteNumber[0].Title;
+        // Example: QT/25-26/003
+
+        const parts = currentQuotesNO.split("/");
+
+        // Get last number part
+        const lastNumber = parts[2];
+
+        // Increment number
+        const nextNumber = (parseInt(lastNumber, 10) + 1)
+          .toString()
+          .padStart(3, "0");
+
+        // Create new quote number
+        const newQuoteNumber = `${parts[0]}/${parts[1]}/${nextNumber}`;
+
+        setQuoteForm((prev) => ({
+          ...prev,
+          QuoteNumber: newQuoteNumber,
+        }));
+      }
+
       await Promise.all([
         // azureMembers(),
         SPReadItems(LISTNAMES.Customer, ["*"], []),
@@ -658,7 +731,7 @@ const QuotesForm: React.FC<QuotesFormProps> = ({
               <div className={styles.headerCell}>S.NO</div>
               <div className={styles.headerCell}>CATEGORY</div>
               <div className={styles.headerCell}>ITEM DETAILS</div>
-              <div className={styles.headerCell}>RATE</div>
+              <div className={styles.headerCell}>UNIT PRICE</div>
               <div className={styles.headerCell}>QTY</div>
 
               <div className={styles.headerCell}>DISCOUNT</div>
@@ -931,7 +1004,7 @@ const QuotesForm: React.FC<QuotesFormProps> = ({
 
             {/* Auto Adjustment Row */}
             <div className={styles.summaryRow} style={{ padding: "0 4px" }}>
-              <span className={styles.summaryLabel}>Auto Adjustment</span>
+              <span className={styles.summaryLabel}>Round up</span>
               <span className={styles.adjustmentValueAmount}>
                 {totals.autoAdjustment >= 0 ? "+ " : "− "}₹
                 {Math.abs(totals.autoAdjustment).toLocaleString("en-IN", {
@@ -1161,8 +1234,16 @@ const QuotesForm: React.FC<QuotesFormProps> = ({
               }}
               onClick={async () => {
                 if (validateQuoteForm(quoteForm, itemDetails)) {
-                  await SaveToSP(quoteForm);
-                  console.log("quoteForm", quoteForm);
+                  try {
+                    await SaveToSP(quoteForm);
+                    toast.success("Quote saved successfully");
+                    setTimeout(() => {
+                      if (onCancel) onCancel();
+                    }, 1000);
+                  } catch (error) {
+                    console.error("Error saving quote:", error);
+                    toast.error("Failed to save quote");
+                  }
                 }
               }}
               //   onClick={() => onSave?.(quoteForm)}

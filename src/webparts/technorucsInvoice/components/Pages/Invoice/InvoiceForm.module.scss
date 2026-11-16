@@ -650,6 +650,8 @@
     font-family: inherit;
     font-size: 0.9rem;
     outline: none;
+    resize: none;           /* remove resize handle */
+    box-sizing: border-box; /* ensure padding doesn't overflow parent */
     &:focus {
         border-color: #0d4a27;
     }

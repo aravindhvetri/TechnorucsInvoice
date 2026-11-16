@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 export const validateStatusUpdate = (
   exchangeRate: number,
   status: string,
-  currency: string | undefined
+  currency: string | undefined,
 ): boolean => {
   // 1. If currency is NOT INR, Exchange Rate is visible and required
   if (currency && !currency.includes("INR")) {
@@ -31,9 +31,12 @@ export const validateStatusUpdate = (
 
 export const validateInvoice = (
   invoiceForm: any,
-  itemDetails: any[]
+  itemDetails: any[],
 ): boolean => {
-  if (!invoiceForm.CustomerDisplayName || invoiceForm.CustomerDisplayName.trim() === "") {
+  if (
+    !invoiceForm.CustomerDisplayName ||
+    invoiceForm.CustomerDisplayName.trim() === ""
+  ) {
     toast.error("Please select a Customer.");
     return false;
   }
@@ -43,6 +46,10 @@ export const validateInvoice = (
   }
   if (!invoiceForm.InvoiceDate) {
     toast.error("Invoice Date is required.");
+    return false;
+  }
+  if (!invoiceForm.Department || String(invoiceForm.Department).trim() === "") {
+    toast.error("Department is required.");
     return false;
   }
   if (!invoiceForm.Terms || String(invoiceForm.Terms).trim() === "") {
@@ -59,9 +66,9 @@ export const validateInvoice = (
     toast.error("At least one Item Details line is required.");
     return false;
   }
-  
+
   const hasValidItem = activeItems.some(
-    (item: any) => item.ItemDeatils && String(item.ItemDeatils).trim() !== ""
+    (item: any) => item.ItemDeatils && String(item.ItemDeatils).trim() !== "",
   );
   if (!hasValidItem) {
     toast.error("Please fill in the Item Details for at least one line item.");

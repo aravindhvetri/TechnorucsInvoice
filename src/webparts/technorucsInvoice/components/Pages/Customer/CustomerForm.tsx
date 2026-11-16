@@ -528,9 +528,36 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
     }
     setErrors({});
 
+    setLoader(true);
+
+    try {
+      const existingCustomers = await SPGetItemsFilter(
+        LISTNAMES.Customer,
+        ["ID", "Emailaddress", "Currency"],
+        [],
+        `Emailaddress eq '${customerForm.Emailaddress}' and Currency eq '${customerForm.Currency}'`,
+      );
+
+      const isDuplicate =
+        mode === "edit"
+          ? existingCustomers.some(
+              (c: any) => c.ID !== initialData?.ID && c.Id !== initialData?.ID,
+            )
+          : existingCustomers.length > 0;
+
+      if (isDuplicate) {
+        toast.error(
+          "A customer with the same Email and Currency already exists.",
+        );
+        setLoader(false);
+        return;
+      }
+    } catch (error) {
+      console.error("Error checking duplicate customer:", error);
+    }
+
     if (mode === "edit") {
       debugger;
-      setLoader(true);
       const json = await generateCustomerjson(customerForm);
 
       await SPUpdateItem(LISTNAMES.Customer, initialData?.ID, json);
@@ -557,9 +584,11 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
       }
       setLoader(false);
       toast.success("Customer updated successfully!");
-      if (onCancel) onCancel();
+      setTimeout(() => {
+        if (onSave) onSave(customerForm);
+        else if (onCancel) onCancel();
+      }, 1000);
     } else {
-      setLoader(true);
       debugger;
       const json = await generateCustomerjson(customerForm);
       debugger;
@@ -578,7 +607,10 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
       }
       setLoader(false);
       toast.success("Customer created successfully!");
-      if (onCancel) onCancel();
+      setTimeout(() => {
+        if (onSave) onSave(customerForm);
+        else if (onCancel) onCancel();
+      }, 1000);
     }
   };
 
@@ -1544,7 +1576,9 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
                         {/* Mobile Card Header */}
                         <div className={styles.mobileRowHeader}>
                           <div className={styles.itemCounter}>
-                            <span className={styles.counterPill}>{idx + 1}</span>
+                            <span className={styles.counterPill}>
+                              {idx + 1}
+                            </span>
                             <span>Contact Person</span>
                           </div>
                           {mode !== "view" && (

@@ -5,7 +5,7 @@ const LISTNAMES = {
   ItemDetails: "ItemDetails",
   InvoiceNo: "InvoiceNo",
   Quote: "Quotes",
-  QuoteNo: "QuoteNo",
+  QuoteNo: "QuotesNo",
   QuoteItemDetails: "QuotesItemDetails",
 };
 
